@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Configuration, OpenAIApi } from "openai";
-import cadenaLogo from './assets/cadenaLogo.png';
+import DallE Logo from './assets/DallE Logo.png';
 
 //open ai config
 const configuration = new Configuration({
@@ -24,7 +24,7 @@ const App = () => {
     try {
       const completions = await apiClient.createCompletion({
         model: "text-davinci-003",
-        prompt: `Make a tweet about: ${prompt} and add emojis to make it more fun.`,
+        prompt: `Make a Linkedin Post about: ${prompt} and add emojis to make it more fun. However keep the tips and tricks business professional`,
         max_tokens: 880,
         temperature: 0.7,
         top_p: 1,
@@ -40,13 +40,13 @@ const App = () => {
 
   return (
     <div className="flex flex-col items-center justify-center px-4 sm:p-0">
-      <img src={cadenaLogo} alt="Cadena Logo" className="h-12 mb-10 mt-40" />
+      <img src={DallE Logo} alt="DallE Logo" className="h-12 mb-10 mt-40" />
       <form onSubmit={handleSubmit} className="w-full max-w-lg">
         <div className="flex items-center border-b-2 border-indigo-600 py-2">
           <input
             className="appearance-none bg-transparent border-none w-full text-white mr-3 py-1 px-2 leading-tight focus:outline-none"
             type="text"
-            placeholder="Enter a topic you want to tweet about."
+            placeholder="Enter a topic for Linkedin Post."
             value={prompt}
             onChange={handlePromptChange}
           />
