@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Configuration, OpenAIApi } from "openai";
-import cadenaLogo from './assets/DallE Logo.png';
+import DallE logo from './assets/DallE Logo.png';
 
 //open ai config
 const configuration = new Configuration({
@@ -40,7 +40,7 @@ const App = () => {
 
   return (
     <div className="flex flex-col items-center justify-center px-4 sm:p-0">
-      <img src={DallE Logo} alt="DallE Logo" className="h-12 mb-10 mt-40" />
+      <img src={cadenaLogo} alt="DallE Logo" className="h-12 mb-10 mt-40" />
       <form onSubmit={handleSubmit} className="w-full max-w-lg">
         <div className="flex items-center border-b-2 border-indigo-600 py-2">
           <input
