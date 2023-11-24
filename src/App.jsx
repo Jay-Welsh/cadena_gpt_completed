@@ -1,8 +1,7 @@
-import { useState } from "react";
+import React, { useState } from 'react';
 import { Configuration, OpenAIApi } from "openai";
-import DallELogo from './assets/DallE Logo.png'; // Rename the import variable to DallELogo
+import DallELogo from './assets/DallE Logo.png';
 
-//open ai config
 const configuration = new Configuration({
   apiKey: import.meta.env.VITE_OPENAI_API_KEY,
 });
@@ -12,11 +11,12 @@ const App = () => {
   const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState("");
 
-  const handlePromptChange = (event) => {
-    setPrompt(event.target.value);
-  };
+  const predefinedPrompt1 = "Fixed Prompt for Button 1";
+  const predefinedPrompt2 = "Fixed Prompt for Button 2";
 
-  console.log(prompt);
+  const handleButtonClick = (predefinedPrompt) => {
+    setPrompt(predefinedPrompt);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -24,14 +24,13 @@ const App = () => {
     try {
       const completions = await apiClient.createCompletion({
         model: "text-davinci-003",
-        prompt: `Make a Linkedin Post about: ${prompt} Make it professional and add Hashtags to make it more Business suited`,
+        prompt: prompt,
         max_tokens: 880,
         temperature: 0.7,
         top_p: 1,
         frequency_penalty: 0,
         presence_penalty: 0,
       });
-      console.log(completions);
       setResponse(completions.data.choices[0].text);
     } catch (error) {
       console.log(error);
@@ -40,7 +39,11 @@ const App = () => {
 
   return (
     <div className="flex flex-col items-center justify-center px-4 sm:p-0">
-      <img src={DallELogo} alt="Descriptive Alt Text" style={{ borderRadius: '50%', transform: 'scale(0.6)' }} />
+      <img src={DallELogo} alt="DallE Logo" style={{ borderRadius: '50%', transform: 'scale(0.6)' }} />
+      <div>
+        <button onClick={() => handleButtonClick(Act as an comedian to write this prompt for Linkedin in a business style Michael McIntyre kind of way add humorous and seo friendly though on point hashtags to support the post)}>Button 1</button>
+        <button onClick={() => handleButtonClick(Act as a very serious and knowledged expert on the topic add seo friendly business hashtags which will drive this post)}>Button 2</button>
+      </div>
       <form onSubmit={handleSubmit} className="w-full max-w-lg">
         <div className="flex items-center border-b-2 border-indigo-600 py-2">
           <input
@@ -48,7 +51,7 @@ const App = () => {
             type="text"
             placeholder="Enter a topic for Linkedin Post"
             value={prompt}
-            onChange={handlePromptChange}
+            onChange={(e) => setPrompt(e.target.value)}
           />
           <button
             className="flex-shrink-0 bg-indigo-600 hover:bg-indigo-700 border-indigo-600 hover:border-indigo-700 text-sm border-4 text-white py-1 px-2 rounded"
