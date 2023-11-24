@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Configuration, OpenAIApi } from 'openai';
 import DallELogo from './assets/DallE Logo.png';
+import styles from './Button.module.css';
 
 const configuration = new Configuration({
   apiKey: import.meta.env.VITE_OPENAI_API_KEY,
