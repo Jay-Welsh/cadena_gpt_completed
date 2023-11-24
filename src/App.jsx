@@ -24,7 +24,7 @@ const App = () => {
     try {
       const completions = await apiClient.createCompletion({
         model: "text-davinci-003",
-        prompt: `Make a Linkedin Post about: ${prompt} Make it professional and add Hashtags to make it more Business`,
+        prompt: `Make a Linkedin Post about: ${prompt} Make it professional and add Hashtags to make it more Business suited`,
         max_tokens: 880,
         temperature: 0.7,
         top_p: 1,
