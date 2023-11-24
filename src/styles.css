@@ -1,0 +1,17 @@
+.button {
+  /* common button styles */
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.humorous-button {
+  background-color: #ffcc00; /* Yellow for humorous */
+  color: white;
+}
+
+.serious-button {
+  background-color: #007bff; /* Blue for serious */
+  color: white;
+}
