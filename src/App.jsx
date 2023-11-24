@@ -54,4 +54,22 @@ const App = () => {
             onChange={(e) => setPrompt(e.target.value)}
           />
           <button
-            className="flex-shrink-0 bg-indigo-600 hover:bg-indigo-700 border-indigo-600 hover:border-indigo-
+            className="flex-shrink-0 bg-indigo-600 hover:bg-indigo-700 border-indigo-600 hover:border-indigo-700 text-sm border-4 text-white py-1 px-2 rounded"
+            type="submit"
+          >
+            Generate
+          </button>
+        </div>
+      </form>
+      {response && (
+        <div className="w-full max-w-lg mt-4">
+          <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <p className="text-gray-700 text-base">{response}</p>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default App;
