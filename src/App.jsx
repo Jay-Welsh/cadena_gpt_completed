@@ -9,76 +9,59 @@ const apiClient = new OpenAIApi(configuration);
 
 const App = () => {
   const [userInput, setUserInput] = useState("");
-  const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState("");
-  const [selectedButton, setSelectedButton] = useState(null);
+  const [activeButton, setActiveButton] = useState(null); // New state to track active button
 
-  const handleButtonClick = (buttonType) => {
-    const hashtags = buttonType === "humorous"
-      ? "#funny #comedy #humor"
-      : "#serious #professional #business";
-    setPrompt(`${userInput} ${hashtags}`);
-    setSelectedButton(buttonType);
+  const prompts = {
+    humorous: "Michael McIntyre style humor. #FunnyBusiness #WorkplaceLaughs",
+    serious: "TripAdvisor underground expert tip. #IndustryInsights #ProfessionalAdvice"
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleButtonClick = (buttonType) => {
+    setActiveButton(buttonType);
+    const promptPrefix = prompts[buttonType];
+    setPrompt(promptPrefix + " " + userInput); // Combining the predefined prompt with user input
+  };
 
-    try {
-      const completions = await apiClient.createCompletion({
-        model: "text-davinci-003",
-        prompt,
-        max_tokens: 880,
-        temperature: 0.7,
-        top_p: 1,
-        frequency_penalty: 0,
-        presence_penalty: 0,
-      });
-      setResponse(completions.data.choices[0].text);
-    } catch (error) {
-      console.log(error);
+  const handleUserInputChange = (e) => {
+    setUserInput(e.target.value);
+    if(activeButton) {
+      setPrompt(prompts[activeButton] + " " + e.target.value); // Update the prompt when user input changes
     }
   };
 
-  const buttonStyle = (buttonType) => ({
-    backgroundColor: selectedButton === buttonType ? "green" : "initial",
-    color: "white",
-    borderRadius: '20px',
-    padding: '10px 20px',
-    margin: '5px',
-    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)'
-  });
+  // ... rest of your existing handleSubmit function
 
   return (
     <div className="flex flex-col items-center justify-center px-4 sm:p-0">
       <img src={DallELogo} alt="DallE Logo" style={{ borderRadius: '50%', transform: 'scale(0.6)' }} />
-      <p style={{ color: 'white', margin: '10px' }}>Select a style for your post:</p>
       <div>
-        <button onClick={() => handleButtonClick("humorous")} style={buttonStyle("humorous")}>Humorous</button>
-        <button onClick={() => handleButtonClick("serious")} style={buttonStyle("serious")}>Serious</button>
+        <button 
+          onClick={() => handleButtonClick('humorous')} 
+          style={{ backgroundColor: activeButton === 'humorous' ? 'green' : 'initial' }}
+        >
+          Humorous
+        </button>
+        <button 
+          onClick={() => handleButtonClick('serious')} 
+          style={{ backgroundColor: activeButton === 'serious' ? 'green' : 'initial' }}
+        >
+          Serious
+        </button>
       </div>
       <form onSubmit={handleSubmit} className="w-full max-w-lg">
-        <div className="flex items-center border-b-2 border-indigo-600 py-2">
-          <input
-            className="appearance-none bg-transparent border-none w-full text-white mr-3 py-1 px-2 leading-tight focus:outline-none"
-            type="text"
-            placeholder="Enter your topic here"
-            value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
-          />
-          <button
-            className="flex-shrink-0 bg-indigo-600 hover:bg-indigo-700 border-indigo-600 hover:border-indigo-700 text-sm border-4 text-white py-1 px-2 rounded"
-            type="submit"
-          >
-            Generate
-          </button>
-        </div>
+        {/* ... rest of your form */}
+        <input
+          type="text"
+          placeholder="Enter your topic"
+          value={userInput}
+          onChange={handleUserInputChange}
+        />
+        {/* ... rest of your form */}
       </form>
       {response && (
         <div className="w-full max-w-lg mt-4">
-          <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-            <p className="text-gray-700 text-base">{response}</p>
-          </div>
+          {/* ... display the response */}
         </div>
       )}
     </div>
