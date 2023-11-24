@@ -9,13 +9,12 @@ const apiClient = new OpenAIApi(configuration);
 
 const App = () => {
   const [prompt, setPrompt] = useState("");
+  const [userInput, setUserInput] = useState("");
   const [response, setResponse] = useState("");
 
-  const predefinedPrompt1 = "Act as a comedian to write this prompt for LinkedIn in a business style, Michael McIntyre kind of way, add humorous and SEO-friendly though on point hashtags to support the post";
-  const predefinedPrompt2 = "Act as a very serious and knowledgeable expert on the topic, add SEO-friendly business hashtags which will drive this post";
-
-  const handleButtonClick = (predefinedPrompt) => {
-    setPrompt(predefinedPrompt);
+  const handleButtonClick = (tone) => {
+    const fullPrompt = `${tone}: ${userInput}`;
+    setPrompt(fullPrompt);
   };
 
   const handleSubmit = async (event) => {
@@ -33,26 +32,35 @@ const App = () => {
       });
       setResponse(completions.data.choices[0].text);
     } catch (error) {
-      console.error("Error in generating response:", error);
+      console.log(error);
     }
   };
 
   return (
     <div className="flex flex-col items-center justify-center px-4 sm:p-0">
-      <img src={DallELogo} alt="DallE Logo" style={{ borderRadius: '50%', transform: 'scale(0.6)' }} />
+      <img src={DallELogo} alt="DallE Logo" style={{ borderRadius: '50%', transform: 'scale(0.45)' }} />
       <div>
-        <button onClick={() => handleButtonClick(predefinedPrompt1)}>Button 1</button>
-        <button onClick={() => handleButtonClick(predefinedPrompt2)}>Button 2</button>
+        <button 
+          onClick={() => handleButtonClick("Act as a comedian to write this post")}
+          style={{ backgroundColor: 'red', color: 'white', fontWeight: 'bold' }}
+        >
+          Humorous
+        </button>
+        <button 
+          onClick={() => handleButtonClick("Act as a very serious and knowledgeable expert on the topic")}
+          style={{ backgroundColor: 'blue', color: 'white', fontWeight: 'bold' }}
+        >
+          Serious
+        </button>
       </div>
+      <input
+        value={userInput}
+        onChange={(e) => setUserInput(e.target.value)}
+        placeholder="Enter your topic"
+        className="appearance-none bg-transparent border-none w-full text-white mr-3 py-1 px-2 leading-tight focus:outline-none"
+      />
       <form onSubmit={handleSubmit} className="w-full max-w-lg">
         <div className="flex items-center border-b-2 border-indigo-600 py-2">
-          <input
-            className="appearance-none bg-transparent border-none w-full text-white mr-3 py-1 px-2 leading-tight focus:outline-none"
-            type="text"
-            placeholder="Enter a topic for LinkedIn Post"
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-          />
           <button
             className="flex-shrink-0 bg-indigo-600 hover:bg-indigo-700 border-indigo-600 hover:border-indigo-700 text-sm border-4 text-white py-1 px-2 rounded"
             type="submit"
