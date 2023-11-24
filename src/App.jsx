@@ -8,25 +8,28 @@ const configuration = new Configuration({
 const apiClient = new OpenAIApi(configuration);
 
 const App = () => {
-  const [userInput, setUserInput] = useState("");
-  const [response, setResponse] = useState("");
-  const [activeButton, setActiveButton] = useState(null); // New state to track active button
+  // ... other state definitions
 
-  const prompts = {
-    humorous: "Michael McIntyre style humor. #FunnyBusiness #WorkplaceLaughs",
-    serious: "TripAdvisor underground expert tip. #IndustryInsights #ProfessionalAdvice"
-  };
+  const predefinedHashtags = "#BusinessInsights #LinkedInTips"; // Define your hashtags here
 
-  const handleButtonClick = (buttonType) => {
-    setActiveButton(buttonType);
-    const promptPrefix = prompts[buttonType];
-    setPrompt(promptPrefix + " " + userInput); // Combining the predefined prompt with user input
-  };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-  const handleUserInputChange = (e) => {
-    setUserInput(e.target.value);
-    if(activeButton) {
-      setPrompt(prompts[activeButton] + " " + e.target.value); // Update the prompt when user input changes
+    try {
+      const completions = await apiClient.createCompletion({
+        model: "text-davinci-003",
+        prompt: prompt,
+        max_tokens: 880,
+        temperature: 0.7,
+        top_p: 1,
+        frequency_penalty: 0,
+        presence_penalty: 0,
+      });
+
+      const responseWithHashtags = completions.data.choices[0].text + "\n\n" + predefinedHashtags;
+      setResponse(responseWithHashtags); // Append hashtags to the response
+    } catch (error) {
+      console.log(error);
     }
   };
 
