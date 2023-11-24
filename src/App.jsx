@@ -9,14 +9,14 @@ const apiClient = new OpenAIApi(configuration);
 
 const App = () => {
   const [userInput, setUserInput] = useState("");
+  const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState("");
 
   const handleButtonClick = (style) => {
     let hashtags = style === "Humorous" 
-      ? "#funny #humor #business #comedy"
+      ? "#funny #humor #business #comedy" 
       : "#serious #business #professional #leadership";
-    let fullPrompt = `${style} LinkedIn Post: ${userInput} ${hashtags}`;
-    setPrompt(fullPrompt);
+    setPrompt(`${userInput} ${hashtags}`);
   };
 
   const handleSubmit = async (event) => {
