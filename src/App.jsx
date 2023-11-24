@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Configuration, OpenAIApi } from 'openai';
 import DallELogo from './assets/DallE Logo.png';
-import styles from './Button.module.css';
+import './styles.css'; // Importing the styles.css
 
 const configuration = new Configuration({
   apiKey: import.meta.env.VITE_OPENAI_API_KEY,
@@ -11,27 +11,21 @@ const apiClient = new OpenAIApi(configuration);
 const App = () => {
   const [prompt, setPrompt] = useState('');
   const [response, setResponse] = useState('');
-  const [selectedButton, setSelectedButton] = useState('');
+  const [selectedType, setSelectedType] = useState('');
 
-  const handleButtonClick = (buttonType, predefinedPrompt) => {
-    setPrompt(predefinedPrompt);
-    setSelectedButton(buttonType);
+  const handleTypeChange = (type) => {
+    setSelectedType(type);
+    setPrompt(type === 'humorous' ? 'Write a humorous LinkedIn post about: ' : 'Write a serious LinkedIn post about: ');
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    // Example hashtags
-    const hashtags = selectedButton === 'humorous'
-      ? '#Funny #Humor #Laugh'
-      : '#Serious #Expert #Advice';
-
     try {
       const completions = await apiClient.createCompletion({
         model: 'text-davinci-003',
-        prompt: `${prompt} ${hashtags}`,
+        prompt: prompt,
         max_tokens: 880,
-        // ... other configurations
+        // other configurations...
       });
       setResponse(completions.data.choices[0].text);
     } catch (error) {
@@ -39,40 +33,25 @@ const App = () => {
     }
   };
 
-  // Render Method
   return (
     <div className="flex flex-col items-center justify-center px-4 sm:p-0">
       <img src={DallELogo} alt="DallE Logo" style={{ borderRadius: '50%', transform: 'scale(0.6)' }} />
       <div>
         <button 
-          className={`button ${selectedButton === 'humorous' ? 'green' : ''}`} 
-          onClick={() => handleButtonClick('humorous', 'Make a humorous LinkedIn Post about:')}
+          className={`button ${selectedType === 'humorous' ? 'humorous-button' : ''}`} 
+          onClick={() => handleTypeChange('humorous')}
         >
           Humorous
         </button>
         <button 
-          className={`button ${selectedButton === 'serious' ? 'green' : ''}`} 
-          onClick={() => handleButtonClick('serious', 'Give a serious expert tip about:')}
+          className={`button ${selectedType === 'serious' ? 'serious-button' : ''}`} 
+          onClick={() => handleTypeChange('serious')}
         >
           Serious
         </button>
       </div>
       <form onSubmit={handleSubmit} className="w-full max-w-lg">
-        <div className="flex items-center border-b-2 border-indigo-600 py-2">
-          <input
-            className="appearance-none bg-transparent border-none w-full text-white mr-3 py-1 px-2 leading-tight focus:outline-none"
-            type="text"
-            placeholder="Enter a topic for Linkedin Post"
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-          />
-          <button
-            className="flex-shrink-0 bg-indigo-600 hover:bg-indigo-700 border-indigo-600 hover:border-indigo-700 text-sm border-4 text-white py-1 px-2 rounded"
-            type="submit"
-          >
-            Generate
-          </button>
-        </div>
+        {/* Rest of the form */}
       </form>
       {response && (
         <div className="w-full max-w-lg mt-4">
