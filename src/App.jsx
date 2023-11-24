@@ -11,12 +11,14 @@ const App = () => {
   const [userInput, setUserInput] = useState("");
   const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState("");
+  const [selectedButton, setSelectedButton] = useState(null);
 
-  const handleButtonClick = (style) => {
-    let hashtags = style === "Humorous" 
-      ? "#funny #humor #business #comedy" 
-      : "#serious #business #professional #leadership";
+  const handleButtonClick = (buttonType) => {
+    const hashtags = buttonType === "humorous"
+      ? "#funny #comedy #humor"
+      : "#serious #professional #business";
     setPrompt(`${userInput} ${hashtags}`);
+    setSelectedButton(buttonType);
   };
 
   const handleSubmit = async (event) => {
@@ -25,7 +27,7 @@ const App = () => {
     try {
       const completions = await apiClient.createCompletion({
         model: "text-davinci-003",
-        prompt: prompt,
+        prompt,
         max_tokens: 880,
         temperature: 0.7,
         top_p: 1,
@@ -38,13 +40,22 @@ const App = () => {
     }
   };
 
+  const buttonStyle = (buttonType) => ({
+    backgroundColor: selectedButton === buttonType ? "green" : "initial",
+    color: "white",
+    borderRadius: '20px',
+    padding: '10px 20px',
+    margin: '5px',
+    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)'
+  });
+
   return (
     <div className="flex flex-col items-center justify-center px-4 sm:p-0">
       <img src={DallELogo} alt="DallE Logo" style={{ borderRadius: '50%', transform: 'scale(0.6)' }} />
-      <p style={{ color: 'white', margin: '10px' }}>Select either of these for a result:</p>
-      <div style={{ marginBottom: '10px' }}>
-        <button onClick={() => handleButtonClick("Humorous")} style={{ backgroundColor: 'red', color: 'white', borderRadius: '20px', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)', marginRight: '5px', padding: '10px 20px' }}>Humorous</button>
-        <button onClick={() => handleButtonClick("Serious")} style={{ backgroundColor: 'blue', color: 'white', borderRadius: '20px', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)', padding: '10px 20px' }}>Serious</button>
+      <p style={{ color: 'white', margin: '10px' }}>Select a style for your post:</p>
+      <div>
+        <button onClick={() => handleButtonClick("humorous")} style={buttonStyle("humorous")}>Humorous</button>
+        <button onClick={() => handleButtonClick("serious")} style={buttonStyle("serious")}>Serious</button>
       </div>
       <form onSubmit={handleSubmit} className="w-full max-w-lg">
         <div className="flex items-center border-b-2 border-indigo-600 py-2">
