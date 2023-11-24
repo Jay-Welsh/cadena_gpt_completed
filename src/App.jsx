@@ -38,17 +38,17 @@ const App = () => {
 
   return (
     <div className="flex flex-col items-center justify-center px-4 sm:p-0">
-      <img src={DallELogo} alt="DallE Logo" style={{ borderRadius: '50%', transform: 'scale(0.45)' }} />
-      <div>
+      <img src={DallELogo} alt="DallE Logo" style={{ borderRadius: '50%', transform: 'scale(0.6)' }} />
+      <div style={{ margin: '10px 0' }}>
         <button 
-          onClick={() => handleButtonClick("Act as a comedian to write this post")}
-          style={{ backgroundColor: 'red', color: 'white', fontWeight: 'bold' }}
+          onClick={() => handleButtonClick("Act as a comedian to write this post and add emoticons and hashtags in a humorous though business kind of way")}
+          style={{ backgroundColor: 'red', color: 'white', fontWeight: 'bold', fontSize: '1.5em', marginRight: '0.5cm' }}
         >
           Humorous
         </button>
         <button 
-          onClick={() => handleButtonClick("Act as a very serious and knowledgeable expert on the topic")}
-          style={{ backgroundColor: 'blue', color: 'white', fontWeight: 'bold' }}
+          onClick={() => handleButtonClick("Act as a very serious and knowledgeable expert on the topic and as hashtags that will be on point in a business style")}
+          style={{ backgroundColor: 'blue', color: 'white', fontWeight: 'bold', fontSize: '1.5em' }}
         >
           Serious
         </button>
@@ -58,6 +58,7 @@ const App = () => {
         onChange={(e) => setUserInput(e.target.value)}
         placeholder="Enter your topic"
         className="appearance-none bg-transparent border-none w-full text-white mr-3 py-1 px-2 leading-tight focus:outline-none"
+        style={{ maxWidth: '300px', margin: '0 auto' }} // Adjust width and center alignment
       />
       <form onSubmit={handleSubmit} className="w-full max-w-lg">
         <div className="flex items-center border-b-2 border-indigo-600 py-2">
